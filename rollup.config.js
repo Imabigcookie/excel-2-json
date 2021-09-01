@@ -11,8 +11,6 @@ import serve from 'rollup-plugin-serve'
 import livereload from 'rollup-plugin-livereload'
 import filesize from 'rollup-plugin-filesize'
 import requireContext from 'rollup-plugin-require-context'
-import { visualizer } from 'rollup-plugin-visualizer'
-import ScriptSetup from 'unplugin-vue2-script-setup/rollup'
 
 const production = !process.env.ROLLUP_WATCH
 const port = 8080
@@ -20,7 +18,7 @@ const port = 8080
 export default {
   input: 'src/main.js',
   output: {
-    dir: 'public/assets',
+    dir: 'public',
     entryFileNames: 'app.js',
     format: 'iife',
     sourcemap: !production ? 'inline' : false,
@@ -40,7 +38,6 @@ export default {
       browser: true,
     }),
     commonjs(),
-    ScriptSetup(),
     vue({ css: false, needMap: false }),
     replace({
       'process.env.NODE_ENV': production ? '"production"' : '"development"',
@@ -50,10 +47,6 @@ export default {
       minify: production,
       target: 'es2015',
     }),
-    !production &&
-      visualizer({
-        open: false,
-      }),
     !production &&
       serve({
         open: true,
